@@ -47,6 +47,21 @@ public class Comparators {
     }
 
     /**
+     * Creats a comparator from the given {@link Comparable} class.
+     * 
+     * @param klass the comparable class
+     * @return the created {@link Comparator} instance
+     */
+    public static <T extends Comparable<T>> Comparator<T> fromComparable(Class<T> klass) {
+        return new Comparator<T>() {
+
+            public int compare(T lhs, T rhs) {
+                return lhs.compareTo(rhs);
+            }
+        };
+    }
+
+    /**
      * @return a comparator which considers all elements equal.
      */
     public static <T> Comparator<T> identityComparator() {

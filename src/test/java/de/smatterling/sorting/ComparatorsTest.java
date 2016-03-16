@@ -53,13 +53,7 @@ public class ComparatorsTest {
     }
 
     private Comparator<String> stringComparator() {
-        return new Comparator<String>() {
-
-            public int compare(String lhs, String rhs) {
-                return lhs.compareTo(rhs);
-            }
-
-        };
+        return Comparators.fromComparable(String.class);
     }
 
 }
