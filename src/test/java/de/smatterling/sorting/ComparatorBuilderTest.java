@@ -14,8 +14,7 @@ public class ComparatorBuilderTest {
         final ComparatorBuilder<SomeData> builder = new ComparatorBuilder<ComparatorBuilderTest.SomeData>();
 
         // Handle null values first
-        final Comparator<SomeData> nullComparator = Comparators.nullComparator();
-        builder.addComparator(nullComparator);
+        builder.addNullComparator();
 
         // Java 8 equivalent: builder.addComparatorBy(SomeData::getS)
         builder.addComparatorBy(new Function<ComparatorBuilderTest.SomeData, String>() {
@@ -36,6 +35,7 @@ public class ComparatorBuilderTest {
         });
 
         final Comparator<SomeData> comparator = builder.build();
+        assertEquals(0, comparator.compare(null, null));
         assertEquals(0, comparator.compare(new SomeData("", 0, 0), new SomeData("", 0, 0)));
         assertTrue(comparator.compare(new SomeData("a", 0, 0), new SomeData("a", 0, 1)) < 0);
         assertTrue(comparator.compare(new SomeData("a", 1, 0), new SomeData("a", 0, 1)) > 0);

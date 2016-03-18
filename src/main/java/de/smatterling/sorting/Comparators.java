@@ -12,6 +12,8 @@ public class Comparators {
      * priority than the second (i.e. only if elements are equal under the first comparator the second comparator is
      * applied).
      * 
+     * If both elements are null the comparator returns 0.
+     * 
      * @param a the first comparator (higher priority)
      * @param b the second comparator
      * @return the created {@link Comparator} instance
@@ -21,6 +23,10 @@ public class Comparators {
 
             @Override
             public int compare(T lhs, T rhs) {
+                if (lhs == null && rhs == null) {
+                    return 0;
+                }
+
                 final int r = a.compare(lhs, rhs);
                 if (r == 0) {
                     return b.compare(lhs, rhs);
