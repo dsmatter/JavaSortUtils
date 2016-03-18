@@ -37,6 +37,16 @@ public class ComparatorBuilder<T> {
     }
 
     /**
+     * Adds the null comparator (considers null the "smallest" element) to the end of the list.
+     * 
+     * Comparators are ordered by priority in descending order.
+     */
+    public ComparatorBuilder<T> addNullComparator() {
+        final Comparator<T> nullComparator = Comparators.nullComparator();
+        return addComparator(nullComparator);
+    }
+
+    /**
      * Builds the comparator.
      * 
      * @return the built {@link Comparator} instance
