@@ -13,16 +13,22 @@ public class ComparatorBuilderTest {
     public void testBuilder() {
         final ComparatorBuilder<SomeData> builder = new ComparatorBuilder<ComparatorBuilderTest.SomeData>();
 
+        // Handle null values first
+        builder.addComparator(Comparators.nullComparator());
+
         // Java 8 equivalent: builder.addComparatorBy(SomeData::getS)
         builder.addComparatorBy(new Function<ComparatorBuilderTest.SomeData, String>() {
+            @Override
             public String apply(SomeData t) {
                 return t.getS();
             }
         }).addComparatorBy(new Function<ComparatorBuilderTest.SomeData, Integer>() {
+            @Override
             public Integer apply(SomeData t) {
                 return t.getI();
             }
         }).addComparatorBy(new Function<ComparatorBuilderTest.SomeData, Double>() {
+            @Override
             public Double apply(SomeData t) {
                 return t.getD();
             }
@@ -33,6 +39,7 @@ public class ComparatorBuilderTest {
         assertTrue(comparator.compare(new SomeData("a", 0, 0), new SomeData("a", 0, 1)) < 0);
         assertTrue(comparator.compare(new SomeData("a", 1, 0), new SomeData("a", 0, 1)) > 0);
         assertTrue(comparator.compare(new SomeData("b", 1, 0), new SomeData("a", 0, 1)) > 0);
+        assertTrue(comparator.compare(null, new SomeData("a", 0, 1)) < 0);
     }
 
     public static class SomeData {

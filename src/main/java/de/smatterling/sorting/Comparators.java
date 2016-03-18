@@ -19,6 +19,7 @@ public class Comparators {
     public static <T> Comparator<T> combineComparators(final Comparator<T> a, final Comparator<T> b) {
         return new Comparator<T>() {
 
+            @Override
             public int compare(T lhs, T rhs) {
                 final int r = a.compare(lhs, rhs);
                 if (r == 0) {
@@ -40,6 +41,7 @@ public class Comparators {
     public static <T, R extends Comparable<R>> Comparator<T> comparatorBy(final Function<T, R> f) {
         return new Comparator<T>() {
 
+            @Override
             public int compare(T lhs, T rhs) {
                 return f.apply(lhs).compareTo(f.apply(rhs));
             }
@@ -53,12 +55,15 @@ public class Comparators {
      * @return the created {@link Comparator} instance
      */
     public static <T extends Comparable<T>> Comparator<T> fromComparable(Class<T> klass) {
-        return new Comparator<T>() {
+        final Comparator<T> derivecComparator = new Comparator<T>() {
 
+            @Override
             public int compare(T lhs, T rhs) {
                 return lhs.compareTo(rhs);
             }
         };
+
+        return combineComparators(nullComparator(), derivecComparator);
     }
 
     /**
@@ -67,7 +72,28 @@ public class Comparators {
     public static <T> Comparator<T> identityComparator() {
         return new Comparator<T>() {
 
+            @Override
             public int compare(T o1, T o2) {
+                return 0;
+            }
+
+        };
+    }
+
+    /**
+     * @return a comparator which considers null as the "smallest" element and all other elements equal.
+     */
+    public static <T> Comparator<T> nullComparator() {
+        return new Comparator<T>() {
+
+            @Override
+            public int compare(T lhs, T rhs) {
+                if (lhs == null && rhs != null) {
+                    return -1;
+                } else if (lhs != null && rhs == null) {
+                    return 1;
+                }
+
                 return 0;
             }
 

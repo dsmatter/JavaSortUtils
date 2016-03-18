@@ -17,6 +17,19 @@ public class ComparatorsTest {
         assertEquals(0, comparator.compare("", "foo"));
         assertEquals(0, comparator.compare("foo", ""));
         assertEquals(0, comparator.compare("foo", "bar"));
+        assertEquals(0, comparator.compare(null, "bar"));
+        assertEquals(0, comparator.compare(null, null));
+    }
+
+    @Test
+    public void testNullComparator() {
+        final Comparator<String> comparator = Comparators.nullComparator();
+
+        assertEquals(0, comparator.compare("", ""));
+        assertEquals(0, comparator.compare("foo", "bar"));
+        assertEquals(0, comparator.compare(null, null));
+        assertEquals(-1, comparator.compare(null, "bar"));
+        assertEquals(1, comparator.compare("", null));
     }
 
     @Test
@@ -27,6 +40,7 @@ public class ComparatorsTest {
         assertEquals(0, lengthComparator.compare("foo", "bar"));
         assertTrue(lengthComparator.compare("foo", "barbaz") < 0);
         assertTrue(lengthComparator.compare("foobars", "barbaz") > 0);
+        assertTrue(lengthComparator.compare(null, "barbaz") < 0);
     }
 
     @Test
@@ -37,11 +51,13 @@ public class ComparatorsTest {
         assertTrue(comparator.compare("", "foo") < 0);
         assertTrue(comparator.compare("foo", "bar") > 0);
         assertTrue(comparator.compare("foo", "barbaz") < 0);
+        assertTrue(comparator.compare(null, "barbaz") < 0);
     }
 
     private Comparator<String> lengthComparator() {
         return Comparators.comparatorBy(new Function<String, Integer>() {
 
+            @Override
             public Integer apply(String s) {
                 if (s == null) {
                     return 0;
