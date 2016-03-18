@@ -55,7 +55,8 @@ public class Comparators {
      * @return the created {@link Comparator} instance
      */
     public static <T extends Comparable<T>> Comparator<T> fromComparable(Class<T> klass) {
-        final Comparator<T> derivecComparator = new Comparator<T>() {
+        final Comparator<T> nullComparator = nullComparator();
+        final Comparator<T> derivedComparator = new Comparator<T>() {
 
             @Override
             public int compare(T lhs, T rhs) {
@@ -63,7 +64,7 @@ public class Comparators {
             }
         };
 
-        return combineComparators(nullComparator(), derivecComparator);
+        return combineComparators(nullComparator, derivedComparator);
     }
 
     /**
