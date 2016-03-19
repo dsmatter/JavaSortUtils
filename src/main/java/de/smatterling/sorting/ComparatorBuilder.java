@@ -14,6 +14,20 @@ public class ComparatorBuilder<T> {
     private List<Comparator<T>> comparators = new ArrayList<Comparator<T>>();
 
     /**
+     * @return a new builder instance.
+     */
+    public static <T> ComparatorBuilder<T> init() {
+        return new ComparatorBuilder<T>();
+    }
+
+    /**
+     * @return a new builder instance with the null comparator already in the list.
+     */
+    public static <T> ComparatorBuilder<T> withNullComparator() {
+        return new ComparatorBuilder<T>().addNullComparator();
+    }
+
+    /**
      * Adds a new comparator to the end of the list.
      * 
      * Comparators are ordered by priority in descending order.

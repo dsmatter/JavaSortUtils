@@ -11,10 +11,7 @@ public class ComparatorBuilderTest {
 
     @Test
     public void testBuilder() {
-        final ComparatorBuilder<SomeData> builder = new ComparatorBuilder<ComparatorBuilderTest.SomeData>();
-
-        // Handle null values first
-        builder.addNullComparator();
+        final ComparatorBuilder<SomeData> builder = ComparatorBuilder.withNullComparator();
 
         // Java 8 equivalent: builder.addComparatorBy(SomeData::getS)
         builder.addComparatorBy(new Function<ComparatorBuilderTest.SomeData, String>() {
