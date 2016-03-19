@@ -37,6 +37,18 @@ public class ComparatorBuilder<T> {
     }
 
     /**
+     * Adds a new comparator by using the supplied function and comparator to the end of the list.
+     * 
+     * Comparators are ordered by priority in descending order.
+     * 
+     * @param f the function to create the comparator with
+     * @param comparator the comparator to use
+     */
+    public <R> ComparatorBuilder<T> addComparatorBy(Function<T, R> f, Comparator<R> comparator) {
+        return addComparator(Comparators.comparatorBy(f, comparator));
+    }
+
+    /**
      * Adds the null comparator (considers null the "smallest" element) to the end of the list.
      * 
      * Comparators are ordered by priority in descending order.

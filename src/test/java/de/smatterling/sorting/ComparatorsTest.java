@@ -44,6 +44,27 @@ public class ComparatorsTest {
     }
 
     @Test
+    public void testComparatorByWithComparator() {
+        final Comparator<Integer> comparator = Comparators.comparatorBy(new Function<Integer, String>() {
+
+            @Override
+            public String apply(Integer i) {
+                if (i == null) {
+                    return "null";
+                }
+                return String.valueOf(i);
+            }
+
+        }, lengthComparator());
+
+        assertEquals(0, comparator.compare(null, null));
+        assertEquals(0, comparator.compare(1, 1));
+        assertEquals(0, comparator.compare(5, 9));
+        assertTrue(comparator.compare(990, 32) > 0);
+        assertTrue(comparator.compare(8, 12) < 0);
+    }
+
+    @Test
     public void testCombineComparators() {
         final Comparator<String> comparator = Comparators.combineComparators(lengthComparator(), stringComparator());
 

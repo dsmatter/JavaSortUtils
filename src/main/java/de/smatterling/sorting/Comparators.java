@@ -55,6 +55,25 @@ public class Comparators {
     }
 
     /**
+     * Creates a comparator which compares elements using the provided function and comparator.
+     * 
+     * Elements a, b are compared by comparing f(a), f(b) using the provided comparator.
+     * 
+     * @param f the function
+     * @param comparator the comparator
+     * @return the created {@link Comparator} instance
+     */
+    public static <T, R> Comparator<T> comparatorBy(final Function<T, R> f, final Comparator<R> comparator) {
+        return new Comparator<T>() {
+
+            @Override
+            public int compare(T lhs, T rhs) {
+                return comparator.compare(f.apply(lhs), f.apply(rhs));
+            }
+        };
+    }
+
+    /**
      * Creats a comparator from the given {@link Comparable} class.
      * 
      * @param klass the comparable class
