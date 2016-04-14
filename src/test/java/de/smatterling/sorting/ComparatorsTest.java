@@ -33,6 +33,30 @@ public class ComparatorsTest {
     }
 
     @Test
+    public void testComparatorByWithNulls() {
+        final Function<String, Integer> fooLengthGetter = new Function<String, Integer>() {
+
+            @Override
+            public Integer apply(String t) {
+                if (t.equals("foo")) {
+                    return null;
+                }
+                return t.length();
+            }
+        };
+
+        final Comparator<String> fooComparator = new ComparatorBuilder<String>()
+                .addNullComparator()
+                .addComparatorBy(fooLengthGetter)
+                .build();
+
+        assertEquals(0, fooComparator.compare("foo", "foo"));
+        assertTrue(fooComparator.compare("foo", "bar") < 0);
+        assertTrue(fooComparator.compare("bar", "foo") > 0);
+        assertTrue(fooComparator.compare("foobar", "bar") > 0);
+    }
+
+    @Test
     public void testComparatorBy() {
         final Comparator<String> lengthComparator = lengthComparator();
 

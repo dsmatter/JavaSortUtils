@@ -49,7 +49,7 @@ public class Comparators {
 
             @Override
             public int compare(T lhs, T rhs) {
-                return f.apply(lhs).compareTo(f.apply(rhs));
+                return nullSafeCompare(f.apply(lhs), f.apply(rhs));
             }
         };
     }
@@ -104,6 +104,46 @@ public class Comparators {
             }
 
         };
+    }
+
+    /**
+     * Safely compare two values based on a possibly unsafe comparator.
+     * 
+     * @param lhs left-hand side of comparison
+     * @param rhs right-hand side of comparison
+     * @param comparator the base comparator
+     * @return comparison result
+     */
+    public static <T> int nullSafeCompare(T lhs, T rhs, Comparator<T> comparator) {
+        if (lhs == null && rhs == null) {
+            return 0;
+        } else if (lhs == null) {
+            return -1;
+        } else if (rhs == null) {
+            return 1;
+        }
+
+        return comparator.compare(lhs, rhs);
+    }
+
+    /**
+     * Safely compare two values based on a possibly unsafe {@link Comparable} instance.
+     * 
+     * @param lhs left-hand side of comparison
+     * @param rhs right-hand side of comparison
+     * @param comparator the base comparator
+     * @return comparison result
+     */
+    public static <T extends Comparable<T>> int nullSafeCompare(T lhs, T rhs) {
+        if (lhs == null && rhs == null) {
+            return 0;
+        } else if (lhs == null) {
+            return -1;
+        } else if (rhs == null) {
+            return 1;
+        }
+
+        return lhs.compareTo(rhs);
     }
 
     /**
